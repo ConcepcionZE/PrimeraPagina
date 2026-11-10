@@ -1,0 +1,7 @@
+# HARD RISK LIMITS. Only the owner edits this file. No model and no nightly job can change it.
+risk_per_trade: 0.02       # 2% of the account at risk per trade
+max_daily_loss: 0.05       # 5% max daily loss
+max_open_positions: 3
+max_leverage: 2.0          # owner's cap
+venue_max_leverage: 1.0    # spot cannot borrow, so the effective cap is 1x
+kill_drawdown: 0.15        # kill switch at 15% drawdown from the equity peak

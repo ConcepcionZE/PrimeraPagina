@@ -1,0 +1,12 @@
+{
+  "active": "v1",
+  "previous": null,
+  "history": [
+    {
+      "version": "v1",
+      "approved_by": "owner",
+      "action": "promote",
+      "at": "2026-11-10T16:57:04+00:00"
+    }
+  ]
+}

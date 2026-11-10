@@ -1,0 +1,23 @@
+# Runtime settings. No secrets here. Risk limits are in config/risk.yaml.
+exchange: kraken
+market: spot            # spot only: no shorting, no borrowing
+quote: USDT
+timeframe: 1h
+paper_balance: 10000    # USDT, simulated
+# Trading universe = research finalists with a /USDT pair on Kraken (see docs/RESEARCH.md).
+symbols: [BTC/USDT, ETH/USDT, SOL/USDT]
+off_limits: []          # base assets the agent must never trade, e.g. [DOGE, SHIB]
+reflex_provider: jev    # jev | haiku | rules
+reflex_model: jev-latest
+horizon_bars: 12        # horizon used to score a direction call
+cost:
+  taker_fee: 0.0026     # Kraken spot taker, base tier (ccxt, read 2026-11-10)
+  base_slippage_bps: 3.0
+  impact_coef_bps: 100.0
+  max_participation: 0.02
+  min_notional: 5.0
+health:
+  max_candle_lag_bars: 1.5
+  max_book_age_s: 15
+  max_clock_skew_ms: 2000
+  max_spread_bps: 80
