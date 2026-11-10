@@ -54,6 +54,7 @@ class Runner:
                                off_limits=set(s.off_limits), allowed=set(s.symbols))
         self.tf_ms = TF_MS[s.timeframe]
         self.last_decided: dict[str, int] = {}
+        self.paused: dict[str, bool] = {}
         self.halted_reason = ""
         self.heartbeat_path = os.path.join(s.data_dir, "heartbeat.json")
 
@@ -103,12 +104,11 @@ class Runner:
         day = dt.datetime.fromtimestamp(now / 1000, dt.timezone.utc).strftime("%Y-%m-%d")
         stats = {"decided": 0, "missed": 0, "orders": 0, "unhealthy": 0}
         feeds: dict[str, dict] = {}
+        # Clock skew = exchange clock minus ours, measured once, at the moment of the request.
         try:
-            server_ms: Optional[int] = self.data.server_time_ms()
-            local_ms = self.now_ms()
-            skew_ref = server_ms - local_ms + now   # server time expressed on the cycle's clock
+            skew_ms: Optional[int] = self.data.server_time_ms() - self.now_ms()
         except Exception as e:
-            server_ms, skew_ref = None, None
+            skew_ms = None
             log.warning("server time failed: %s", e)
 
         for sym in s.symbols:
@@ -118,7 +118,9 @@ class Runner:
                 book = self.data.order_book(sym)
             except Exception as e:
                 err = type(e).__name__
-            issues = health_issues(candles, self.tf_ms, self.now_ms(), book, skew_ref, s.health, exchange_error=err)
+            t = self.now_ms()
+            issues = health_issues(candles, self.tf_ms, t, book, None if skew_ms is None else t + skew_ms,
+                                   s.health, exchange_error=err)
             feeds[sym] = {"candles": candles, "book": book, "issues": issues}
 
         prices = {}
@@ -185,14 +187,30 @@ class Runner:
             stats["decided"] += 1
             self.journal.decision(candle_close, sym, self.policy.version, d.model, snap, d.model_dump(),
                                   p_cal, g.action, g.reasons, tr.latency_ms, prices[sym])
-            if g.escalate:
+            # Escalate when a symbol enters the paused state (and when it leaves it), not every candle.
+            was_paused = self.paused.get(sym, False)
+            self.paused[sym] = g.pause_new_risk
+            if g.pause_new_risk and not was_paused:
+                self.journal.event("paused", f"{sym} regime={d.regime} reflex_confidence={d.reflex_confidence:.2f}")
                 self.alerter.send(f"PAUSED new risk on {sym}: regime={d.regime}, reflex_confidence="
                                   f"{d.reflex_confidence:.2f} (< {self.policy.min_reflex_confidence} or crisis). "
-                                  f"Needs your review.", key=f"pause:{sym}", level="warn")
+                                  f"Needs your review.", level="warn")
+            elif was_paused and not g.pause_new_risk:
+                self.alerter.send(f"RESUMED {sym}: reflex_confidence={d.reflex_confidence:.2f}, regime={d.regime}")
             if g.action == "exit":
                 stats["orders"] += self._exit(sym, f["book"], prices[sym], self.now_ms(), g.reasons[0])
             elif g.action == "enter_long" and not self.halted_reason:
-                ask = f["book"].asks[0][0]
+                try:   # price and fill against a fresh book, not the one fetched before the decision
+                    book = self.data.order_book(sym)
+                    stale = health_issues(f["candles"], self.tf_ms, self.now_ms(), book,
+                                          None if skew_ms is None else self.now_ms() + skew_ms, s.health)
+                except Exception as e:
+                    book, stale = None, [f"exchange_error:{type(e).__name__}"]
+                if stale:
+                    self.journal.miss(candle_close, sym, "unhealthy_data", ";".join(stale))
+                    continue
+                f["book"] = book
+                ask = book.asks[0][0]
                 qty, stop, target = position_size(account.equity, ask, p_cal, atr(f["candles"]),
                                                   self.policy, s.limits.risk_per_trade)
                 intent = OrderIntent(sym, "buy", qty, ask, False, stop, target, "entry")

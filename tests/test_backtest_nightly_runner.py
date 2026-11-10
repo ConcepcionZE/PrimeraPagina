@@ -99,7 +99,7 @@ def test_benchmark_pays_costs_and_headline_states_verdict_first():
     assert hold.total_return < gross
     rep = walk_forward(data, "1h", lambda rp: RuleReflex(RuleParams(**rp)), Policy(),
                        {"min_direction_confidence": [0.6, 0.8]}, train_bars=120, test_bars=60)
-    assert rep.headline().startswith(("BEATS", "DOES NOT BEAT"))
+    assert rep.headline().startswith(("BEATS", "DOES NOT BEAT", "NO TRADES"))
     assert len(rep.folds) == 4 and all(f["test"][0] == f["train"][1] for f in rep.folds)   # test always after train
     assert len(rep.strategy.equity_curve) == 240
 
@@ -296,3 +296,26 @@ def test_runner_halts_new_risk_on_ledger_mismatch(tmp_path):
     stats = r.cycle()
     assert stats["orders"] == 0 and "reconciliation_mismatch" in r.halted_reason
     assert any("ledger mismatch" in s for s in sent)
+
+
+def test_slow_feeds_do_not_look_like_clock_skew(tmp_path):
+    """Regression: time spent fetching feeds must not be counted as exchange clock skew."""
+    import time as _t
+
+    r, _ = _runner(tmp_path, Always(_dec()))
+    real = r.data.candles
+
+    def slow(symbol, tf, limit=240):
+        _t.sleep(2.5)                      # longer than max_clock_skew_ms
+        return real(symbol, tf, limit)
+
+    r.data.candles = slow
+    stats = r.cycle()
+    assert stats["unhealthy"] == 0 and stats["decided"] == 1
+
+
+def test_headline_never_calls_a_flat_strategy_a_win():
+    data = _data(420, drift=-0.002)                        # falling market
+    rep = walk_forward(data, "1h", lambda rp: Always(_dec("neutral", 0.4, 0)), Policy(), {}, 120, 60)
+    assert rep.strategy.total_return > rep.benchmark.total_return
+    assert rep.headline().startswith("NO TRADES") and "not evidence of an edge" in rep.headline()

@@ -1,0 +1,25 @@
+{
+  "researched_at_utc": "2026-11-10T17:05:00+00:00",
+  "data_snapshot": "data/research/snapshot_2026-11-10T1705Z.json",
+  "note": "invalid_below is a code-enforced price backstop set 20% under the price at research time. It is an estimate, not a tested level.",
+  "finalists": [
+    {"symbol": "SOL/USDT", "bias": "long", "invalid_below": 65.5,
+     "summary": "Cheapest large L1 on fees: market cap is 227x annualized fees vs 1011x for ETH; daily active addresses above their 1-year average.",
+     "invalidation": "Fees 30d run-rate falls below half of today's, or active addresses drop below 1.5M/day, or price closes below 65.5."},
+    {"symbol": "ETH/USDT", "bias": "long", "invalid_below": 1615.0,
+     "summary": "Deepest DeFi base (40.9B TVL, 6.0x mcap/TVL), 40% off its 1-year high; Glamsterdam upgrade targeted for Q4 2026 with no mainnet date.",
+     "invalidation": "Fee run-rate keeps falling (7d already 0.54x of 30d) for another month, or Glamsterdam slips into 2027, or price closes below 1615."},
+    {"symbol": "BNB/USDT", "bias": "long", "invalid_below": 537.0,
+     "summary": "Relative strength in a falling market (-11% in 30d vs -20% to -27% for peers), active addresses 74% above 1-year average, quarterly burn retired 1.65M BNB on 2026-10-19.",
+     "invalidation": "Loses relative strength vs BTC over 30d, Binance-specific regulatory or solvency event, or price closes below 537."},
+    {"symbol": "XMR/USDT", "bias": "long", "invalid_below": 444.0,
+     "summary": "Only asset in the universe up over 30d (+3.5%) and 1y (+39.6%); pure relative-strength and privacy-demand setup with no fee-based valuation.",
+     "invalidation": "Kraken delists XMR/USDT or restricts it for the account's region, or 30d relative strength vs BTC turns negative, or price closes below 444."},
+    {"symbol": "AVAX/USDT", "bias": "long", "invalid_below": 6.55,
+     "summary": "94% below its all-time high at 6.0x mcap/TVL with all fees burned and fee run-rate rising (7d at 1.13x of 30d). Lowest-conviction finalist.",
+     "invalidation": "Active addresses stay under 100k/day (now 44k vs 374k 1-year average) for another 30 days, or fees turn down, or price closes below 6.55."},
+    {"symbol": "LINK/USDT", "bias": "long", "invalid_below": 8.15,
+     "summary": "Dominant oracle network 81% below its high; the Chainlink Reserve converts revenue into LINK (6.05M LINK held at end of September 2026).",
+     "invalidation": "Reserve accumulation stops or is sold, non-circulating supply (23% of total) is released faster, or price closes below 8.15."}
+  ]
+}

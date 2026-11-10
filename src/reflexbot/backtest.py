@@ -264,9 +264,14 @@ class WalkForwardReport:
 
     def headline(self) -> str:
         s, b = self.strategy.total_return * 100, self.benchmark.total_return * 100
+        n = len(self.strategy.trades)
+        if n == 0:
+            return (f"NO TRADES: strategy stayed flat (0.00%) while BTC hold returned {b:+.2f}%. "
+                    f"Being flat is not evidence of an edge ({len(self.folds)} out-of-sample folds).")
         verdict = "BEATS" if self.beats_btc else "DOES NOT BEAT"
+        note = " Too few trades to conclude anything." if n < 30 else ""
         return (f"{verdict} holding BTC after costs: strategy {s:+.2f}% vs BTC hold {b:+.2f}% "
-                f"(out-of-sample, {len(self.folds)} folds, {len(self.strategy.trades)} trades)")
+                f"(out-of-sample, {len(self.folds)} folds, {n} trades).{note}")
 
 
 def walk_forward(

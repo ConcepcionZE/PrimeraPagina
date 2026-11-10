@@ -136,8 +136,19 @@ def cmd_model_backtest(a, s):
            "new_calls": calls, "misses": misses,
            "latency_ms": {"p50": round(lat[len(lat) // 2]), "p95": round(lat[int(len(lat) * 0.95)]),
                           "max": round(lat[-1])} if lat else None}
-    verdict = "BEATS" if out["beats_btc_hold"] else "DOES NOT BEAT"
-    print(f"{verdict} holding BTC after costs: {r.total_return*100:+.2f}% vs {b.total_return*100:+.2f}%")
+    if not r.trades:
+        out["beats_btc_hold"] = None
+        out["headline"] = (f"NO TRADES: the model never passed the gate, so the strategy stayed flat (0.00%) while "
+                           f"BTC hold returned {b.total_return*100:+.2f}%. Being flat is not evidence of an edge.")
+    else:
+        verdict = "BEATS" if out["beats_btc_hold"] else "DOES NOT BEAT"
+        out["headline"] = (f"{verdict} holding BTC after costs: {r.total_return*100:+.2f}% vs "
+                           f"{b.total_return*100:+.2f}% ({len(r.trades)} trades)")
+    if out["brier"] is not None:
+        out["calibration_note"] = ("Brier above 0.25 means the direction probabilities were less accurate than "
+                                   "always saying 50%." if out["brier"] > 0.25 else
+                                   "Brier below 0.25: better than always saying 50% on this sample.")
+    print(out["headline"])
     print(json.dumps(out, indent=1))
     if a.out:
         os.makedirs(os.path.dirname(a.out) or ".", exist_ok=True)

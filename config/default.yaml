@@ -5,7 +5,7 @@ quote: USDT
 timeframe: 1h
 paper_balance: 10000    # USDT, simulated
 # Trading universe = research finalists with a /USDT pair on Kraken (see docs/RESEARCH.md).
-symbols: [BTC/USDT, ETH/USDT, SOL/USDT]
+symbols: [BTC/USDT, SOL/USDT, ETH/USDT, BNB/USDT, XMR/USDT, AVAX/USDT, LINK/USDT]
 off_limits: []          # base assets the agent must never trade, e.g. [DOGE, SHIB]
 reflex_provider: jev    # jev | haiku | rules
 reflex_model: jev-latest
