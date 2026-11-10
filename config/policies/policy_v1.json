@@ -1,0 +1,27 @@
+{
+  "policy": {
+    "version": "v1",
+    "min_setup_quality": 2,
+    "min_direction_confidence": 0.8,
+    "min_reflex_confidence": 0.6,
+    "max_toxic_flow": 0.7,
+    "exit_confidence": 0.6,
+    "kelly_fraction": 0.25,
+    "stop_atr": 2.0,
+    "target_atr": 3.0,
+    "max_hold_bars": 72,
+    "deadline_ms": 2000.0
+  },
+  "calibrator": {
+    "edges": [],
+    "values": [],
+    "n": 0,
+    "min_samples": 200,
+    "prior_strength": 20.0
+  },
+  "status": "active",
+  "notes": "starting hypotheses from the spec",
+  "evidence": {},
+  "parent": null,
+  "created": "2026-11-10T16:57:04+00:00"
+}

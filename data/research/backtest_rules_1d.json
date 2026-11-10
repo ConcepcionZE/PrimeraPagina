@@ -1,0 +1,183 @@
+{
+  "headline": "BEATS holding BTC after costs: strategy +0.00% vs BTC hold -34.29% (out-of-sample, 6 folds, 0 trades)",
+  "timeframe": "1d",
+  "bars": 719,
+  "symbols": [
+    "BTC/USDT",
+    "ETH/USDT",
+    "SOL/USDT"
+  ],
+  "reflex": "rules (code only; valid on any dates)",
+  "period": [
+    "2025-09-17",
+    "2026-09-11"
+  ],
+  "strategy": {
+    "return_pct": 0.0,
+    "max_dd_pct": 0.0,
+    "sharpe": 0.0,
+    "trades": 0,
+    "win_rate_pct": 0.0,
+    "fees": 0.0,
+    "misses": 0,
+    "rejected": 0
+  },
+  "btc_hold": {
+    "return_pct": -34.29,
+    "max_dd_pct": 53.0,
+    "sharpe": -0.72,
+    "trades": 0,
+    "win_rate_pct": 0.0,
+    "fees": 0.0,
+    "misses": 0,
+    "rejected": 0
+  },
+  "brier": 0.2588,
+  "n_scored": 284,
+  "folds": [
+    {
+      "train": [
+        60,
+        300
+      ],
+      "test": [
+        300,
+        360
+      ],
+      "params": {
+        "min_direction_confidence": 0.6,
+        "target_atr": 3.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": 9.88,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    },
+    {
+      "train": [
+        120,
+        360
+      ],
+      "test": [
+        360,
+        420
+      ],
+      "params": {
+        "min_direction_confidence": 0.6,
+        "target_atr": 3.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": 8.85,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    },
+    {
+      "train": [
+        180,
+        420
+      ],
+      "test": [
+        420,
+        480
+      ],
+      "params": {
+        "min_direction_confidence": 0.8,
+        "target_atr": 4.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": 6.73,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    },
+    {
+      "train": [
+        240,
+        480
+      ],
+      "test": [
+        480,
+        540
+      ],
+      "params": {
+        "min_direction_confidence": 0.6,
+        "target_atr": 3.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": -1.76,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    },
+    {
+      "train": [
+        300,
+        540
+      ],
+      "test": [
+        540,
+        600
+      ],
+      "params": {
+        "min_direction_confidence": 0.8,
+        "target_atr": 3.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": 0.0,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    },
+    {
+      "train": [
+        360,
+        600
+      ],
+      "test": [
+        600,
+        660
+      ],
+      "params": {
+        "min_direction_confidence": 0.6,
+        "target_atr": 3.0,
+        "gap_min_pct": 4.0
+      },
+      "train_return_pct": 0.0,
+      "return_pct": 0.0,
+      "max_dd_pct": 0.0,
+      "sharpe": 0.0,
+      "trades": 0,
+      "win_rate_pct": 0.0,
+      "fees": 0.0,
+      "misses": 0,
+      "rejected": 0
+    }
+  ]
+}

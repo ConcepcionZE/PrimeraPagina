@@ -1,0 +1,43 @@
+# 24/7 runtime. Paper trading only until the owner opens the live gate (docs/RUNBOOK.md).
+# Secrets come from .env (git-ignored). `restart: unless-stopped` plus Docker's own
+# start-on-boot brings both services back after a crash or a reboot.
+services:
+  trader:
+    build: .
+    command: ["run", "--poll", "60"]
+    env_file: .env
+    environment:
+      TRADING_MODE: paper
+    volumes:
+      - botdata:/app/data
+      - ./config:/app/config
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-m", "reflexbot", "health", "--max-age", "300"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 120s
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "5"}
+
+  nightly:
+    build: .
+    command: ["nightly", "--loop"]
+    env_file: .env
+    environment:
+      TRADING_MODE: paper
+    volumes:
+      - botdata:/app/data
+      - ./config:/app/config
+    restart: unless-stopped
+    depends_on:
+      trader:
+        condition: service_started
+    logging:
+      driver: json-file
+      options: {max-size: "10m", max-file: "5"}
+
+volumes:
+  botdata:

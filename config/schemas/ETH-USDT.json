@@ -1,0 +1,79 @@
+{
+  "schema_version": "1",
+  "symbol": "ETH/USDT",
+  "thesis": {
+    "bias": "long",
+    "invalid_below": 1615.0,
+    "summary": "Deepest DeFi base (40.9B TVL, 6.0x mcap/TVL), 40% off its 1-year high; Glamsterdam upgrade targeted for Q4 2026 with no mainnet date.",
+    "invalidation": "Fee run-rate keeps falling (7d already 0.54x of 30d) for another month, or Glamsterdam slips into 2027, or price closes below 1615."
+  },
+  "questions": {
+    "regime": {
+      "type": "choice",
+      "instructions": "Which market regime does this snapshot show for this asset?",
+      "criteria": {
+        "trending": "Persistent directional move; trend_eff high, ema_gap_pct and returns agree",
+        "mean_reverting": "Range-bound; moves fade, trend_eff low, volatility ordinary",
+        "high_vol": "Large erratic moves without a clean direction",
+        "crisis": "Disorderly sell-off: very large losses, extreme volatility, liquidity thinning"
+      }
+    },
+    "direction": {
+      "type": "choice",
+      "instructions": "Over the next 12 candles, which direction is this asset's price more likely to take?",
+      "criteria": {
+        "long": "Price more likely to be higher",
+        "short": "Price more likely to be lower",
+        "neutral": "No usable edge either way"
+      }
+    },
+    "setup_quality": {
+      "type": "score",
+      "instructions": "How good is the long entry setup right now, given trend, pullback depth, volume and spread?",
+      "criteria": [
+        "No setup: nothing favors an entry",
+        "Weak setup: one supporting signal, others absent or against",
+        "Good setup: several signals agree and risk is defined",
+        "Excellent setup: trend, timing, volume and liquidity all agree"
+      ]
+    },
+    "risk_state": {
+      "type": "choice",
+      "instructions": "Given acct_dd_pct, day_loss_pct, exposure_pct and open_pos, what is the account's risk state?",
+      "criteria": {
+        "safe": "Losses and exposure are well inside limits",
+        "near_limit": "Losses or exposure are approaching limits; add no size",
+        "reduce": "Losses or exposure are at limits; cut risk"
+      }
+    },
+    "toxic_flow": {
+      "type": "noul",
+      "instructions": "Order flow is toxic: a new buy order here faces high adverse-selection risk (imbalance against it, widening spread, abnormal volume)."
+    }
+  },
+  "decision_type": {
+    "regime": [
+      "trending",
+      "mean_reverting",
+      "high_vol",
+      "crisis"
+    ],
+    "direction": [
+      "long",
+      "short",
+      "neutral"
+    ],
+    "toxic_flow": "number in [0,1] or null",
+    "setup_quality": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "risk_state": [
+      "safe",
+      "near_limit",
+      "reduce"
+    ]
+  }
+}

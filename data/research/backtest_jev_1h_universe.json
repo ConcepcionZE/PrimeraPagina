@@ -1,0 +1,68 @@
+{
+  "model": "jev",
+  "cutoff_used": "2026-10-22",
+  "timeframe": "1h",
+  "period": [
+    "2026-10-22 23:00",
+    "2026-11-10 16:00"
+  ],
+  "beats_btc_hold": null,
+  "strategy": {
+    "return_pct": 0.0,
+    "max_dd_pct": 0.0,
+    "sharpe": 0.0,
+    "trades": 0,
+    "win_rate_pct": 0.0,
+    "fees": 0.0,
+    "misses": 0,
+    "rejected": 0
+  },
+  "btc_hold": {
+    "return_pct": -10.89,
+    "max_dd_pct": 11.35,
+    "sharpe": -5.67,
+    "trades": 0,
+    "win_rate_pct": 0.0,
+    "fees": 0.0,
+    "misses": 0,
+    "rejected": 0
+  },
+  "decisions": 3143,
+  "scored_directional": 1613,
+  "brier": 0.2605,
+  "hit_rate": 0.495,
+  "reliability": [
+    {
+      "bin": "0.2-0.4",
+      "n": 96,
+      "mean_p": 0.3755208333333333,
+      "hit_rate": 0.5104166666666666
+    },
+    {
+      "bin": "0.4-0.6",
+      "n": 1064,
+      "mean_p": 0.49832706766917295,
+      "hit_rate": 0.49906015037593987
+    },
+    {
+      "bin": "0.6-0.8",
+      "n": 453,
+      "mean_p": 0.6510816777041942,
+      "hit_rate": 0.48344370860927155
+    }
+  ],
+  "direction_counts": {
+    "long": 267,
+    "short": 1407,
+    "neutral": 1469
+  },
+  "new_calls": 1796,
+  "misses": 0,
+  "latency_ms": {
+    "p50": 191,
+    "p95": 236,
+    "max": 480
+  },
+  "headline": "NO TRADES: the model never passed the gate, so the strategy stayed flat (0.00%) while BTC hold returned -10.89%. Being flat is not evidence of an edge.",
+  "calibration_note": "Brier above 0.25 means the direction probabilities were less accurate than always saying 50%."
+}
